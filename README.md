@@ -199,16 +199,18 @@ Pasar parámetros para las rutas. Veamos el ejemplo si quisiéramos ver el detal
 0. Creamos un PetDetailComponent:
 
 - HTML:
-
+```html
 <div class="panel panel-primary">
     <div class="panel-heading">
         {{pageTitle}}
     </div>
 </div>
+```
 
 
 TS:
 
+```typescript
 import { Component } from '@angular/core';
 
 import { Pet } from './pet';
@@ -220,39 +222,42 @@ export class PetDetailComponent {
     pageTitle : string = 'Pet Detail';
     pet : Pet;
 }
+```
 
 CSS
 
 (por ahora vacío)
 
-Y LO AGREGAMOS AL APPmodule
+Y LO AGREGAMOS AL AppModule
 
 
 1. Seteamos el path en app.module.ts (AppModule). En este caso el path sería: pets/id, indicando que ruta a un componente PetDetailComponent. A su vez, le pasamos el parámetro id, con un slash y un dos puntos adelante (/:id). Si quisiéramos más parámetros, repetimos esto.
 2. En el HTML de nuestro listado de mascotas, ponemos un link (ancla) sobre el nombre, de manera de que cada vez que se haga click sobre el mismo, dicha ruta se resuelva y se le pase el parámetro asociado.
 
+```html
   <td><a [routerLink]="['/pets', aPet.id]"> {{aPet.name | uppercase}} </a></td>
-
+```
 
 1. En el PetDetailComponent, leemos los parámetros de la ruta, usando el service ActivatedRoute de ‘@angular/router’.
 
 Lo inyectamos en nuestro componente para que use este servicio (el provider ya viene resuelto por el RouterModule que usamos la clase anterior):
 
+```typescript
 constructor(private _currentRoute: ActivatedRoute) {  }
+```
 
 3. Agarramos el parámetro de la ruta y lo ponemos en una variable privada, dicha lógica lo haremos en el OnInit (hay que implementar OnInit).
 
 
-
-    ngOnInit() : void {
-        // let (es parte de ES2015) y define una variable que vive en este scope
-        // usamos el nombre del parámetro que uamos en la configuración de la ruta y lo obtenemos
-        let id =+ this._currentRoute.snapshot.params['id'];
-        // definimos el string con interpolacion 
-        this.pageTitle +=  `: ${id}`;
-
-    }
-
+```typescript
+ngOnInit() : void {
+	// let (es parte de ES2015) y define una variable que vive en este scope
+	// usamos el nombre del parámetro que uamos en la configuración de la ruta y lo obtenemos
+	let id =+ this._currentRoute.snapshot.params['id'];
+	// definimos el string con interpolacion 
+	this.pageTitle +=  `: ${id}`;
+}
+```
 
 ### Routing a través de código
 
@@ -269,24 +274,36 @@ Recordemos, cada vez que inyectemos un servicio en una clase, tenemos que pregun
 Tutorial:
 
 1. Importamos el Router Service (ProductDetailComponent)
+
+```typescript
 import { ActivatedRoute, Router } from '@angular/router';
+```
 
 2. Inyectamos el servicio:\
 
-
+```typescript
     constructor(private _currentRoute: ActivatedRoute,
                     private _router : Router) {  
     }
-
+```
 
 3. Creamos la función:
 
+```typescript
   onBack(): void {
         this._router.navigate(['/pets']); //En caso de que necesite parametros los paso como otros argumentos
     }
-
+```
 
 4. En el template de ProductDetail (HTML), creamos un botón para ir para atrás:
+
+```html
+<div class='panel-footer'>
+	<a class='btn btn-default' (click)="onBack()" style="width:80px">
+	    <i class='glyphicon glyphicon-chevron-left' ></i> Back
+	</a>
+</div>
+```
 
 ## Protegiendo las rutas con guardas
 
