@@ -31,8 +31,6 @@ Una vez tengamos nuestros Observables, un método en nuestro código puede suscr
 
 Hacer comparación promises vs observables.
 
-
-
 —
 
 There is a huge advantage of observables that is quite relevant here.	Observable supports cancellation while Promise doesn't.
@@ -40,7 +38,7 @@ Using subscribe() and map(), instead of then() doesn't seem to add much complica
 See also Angular - Promise vs Observable for more details.
 Also if FRP style of programming is used it's handy to get an observable everywhere. If that is not desired just using toPromise() gives a Promise and the slightly simpler API.
 
-	Promise
+Promise
 A Promise handles a single event when an async operation completes or fails.
 Note: There are Promise libraries out there that support cancellation, but ES6 Promise doesn't so far.
 Observable
@@ -63,17 +61,20 @@ Angular provee un Servicio HTTP que nos permite llevar a cabo esto; donde luego 
 
 A su vez necesitamos registrar el provider de ese service, en el Angular Injector. Como en muchos casos, esto ya viene hecho. Particularmente, el módulo HttpModule lleva eso a cabo. Por ende, debemos agregarlo al array de imports de nuestro AppModule.
 
+```typescript
 import { HttpModule } from '@angular/http';
+```
 
 Y más abajo
 
+```
 @NgModule({
   imports:      
   [ 
     BrowserModule, 
     FormsModule, 
     HttpModule, …
-
+```
 
 Recordemos que el array declarations es para declarar componentes, directivas y pipes que pertenecen a nuestro módulo. Mientras que el array imports es para obtener módulos de afuera.
 
@@ -81,16 +82,21 @@ Recordemos que el array declarations es para declarar componentes, directivas y 
 
 Hagamos getProducts devuelve una respuesta de tipo Observable<Response>
 
-Importamos también: import { Observable } from ‘rxjs/Observable’;
+Importamos también: 
+
+```typescript
+import { Observable } from ‘rxjs/Observable’;
+```
 
 Es importante notar que las llamadas HTTP son operaciones asincrónicas únicas, por lo que la secuencia Observable contiene sólo un elemento  del tipo Response. 
 
 Es importante notar que también precisamos hacer:
 
+```
 import { Http, Response } from ‘@angular/http’;
+```
 
 Y ahora veamos esto, realmente queremos un Observable que contenga Response?
-
 
 Para cargar el operador map, tenemos que cargarlo usando import:
 
@@ -100,16 +106,18 @@ Esta es una forma bastante inusual de cargar cosas: le dice al Module Loader que
 
 No olvidamos darle:
 
+```
 npm install rxjs --save 
 npm start
+```
 
 Para mantener las cosas simples, hagamos que mismo nuestro Web Server retorne un JSON de las mascotas:
-
 
 CODIGO DE API TRUCHA
 
 La clase queda algo así:
 
+```typescript
  import { Observable } from 'rxjs/Observable';
  import { Http, Response } from '@angular/http';
  import 'rxjs/add/operator/map';
@@ -125,27 +133,31 @@ export class PetService {
     getPets(): Observable<Response> {
         return this._httpService.get(this.WEB_API_URL);
     }
-    
-}
 
+}
+```
 
 Nuestros componentes, como el PetListComponent, esperan recibir una lista de Mascotas (Pets), no de respuestas Http. En consecuencia precisamos “traducir” cada response en un array de mascotas. Eso lo hacemos con el operador map. Dicho operador lo que nos va a permitir es tomar la Response Http y convertirla en un array de Mascotas. El argumento que recibe dicha función es una array function, como ya hemos visto, que son simplemente lambda expressions, que transforma la respuesta en un JSON. Quedando algo así:
 
+```typescript
   getPets(): Observable<Array<Pet>> {
         return this._httpService.get(this.WEB_API_URL)
         .map((response : Response) => <Array<Pet>> response.json());
     }
-
+```
 
 Ahora simplemente agregamos otro operador, para manejar errores. Esto es importante ya que muchísimas cosas pueden darse al querer comunicarse con un servicio de backend, desde una conexión perdida, una request inválida, etc. En consecuencia, agreguemos manejo de excepciones. 
 
 Importamos los siguientes dos operadores:
 
+```typescript
  import 'rxjs/add/operator/catch'; //para manejar excepciones
  import 'rxjs/add/operator/do'; //para hacer algo cada vez que llega una request (ej: loggear y ver que llegó.
+```
 
 Nos queda algo así:
 
+```typescript
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
@@ -176,6 +188,7 @@ export class PetService {
     }
 
 }
+```
 
 Finalmente, lo que hacemos es que nuestro componente se suscriba al resultado de la llamada (a los observables). Esto lo hacemos a través del método suscribe. Y cómo los Observables manejan múltiples valores a lo largo del tiempo, la función es llamada para cada valor que el Observable emite. En algunos casos queremos saber cuando el observable se completa, por lo que también podemos tener una función de completado (tercer argumento que es opcional, se ejecuta cuando se completa).
 
@@ -403,12 +416,3 @@ import { HttpModule } from '@angular/http';
 })
 export class AppModule { }
 ```
-
-
-
-
-
- 
-
-
-
