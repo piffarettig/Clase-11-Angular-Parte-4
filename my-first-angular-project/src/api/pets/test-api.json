@@ -1,0 +1,58 @@
+[
+    {
+        "id": "1",
+        "name": "Bobby",
+        "age": 4,
+        "size": "Grande",
+        "birthDate": "",
+        "weight": 20,
+        "breed": "Golden Retriever",
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Golden_Retriever_with_tennis_ball.jpg/1200px-Golden_Retriever_with_tennis_ball.jpg",
+        "rating": 3
+    },
+    {
+        "id": "2",
+        "name": "Zeus",
+        "age": 1,
+        "size": "Grande",
+        "birthDate": "",
+        "weight": 18,
+        "breed": "Husky",
+        "imageUrl": "http://cdn3-www.dogtime.com/assets/uploads/gallery/siberian-husky-dog-breed-pictures/siberian-husky-dog-breed-pictures-5.jpg",
+        "rating": 4
+    },
+        {
+        "id": "3",
+        "name": "Roberto",
+        "age": 3,
+        "size": "Mediano",
+        "birthDate": "",
+        "weight": 15,
+        "breed": "Pug",
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/63/Mops-falk-vom-maegdebrunnen-internationaler-champion-fci.jpg",
+        "rating": 5
+    },
+    {
+        "id": "4",
+        "name": "Batman",
+        "age": 1,
+        "size": "Mediano",
+        "birthDate": "",
+        "weight": 10,
+        "breed": "French Bulldog",
+        "imageUrl": "http://petful.supercopyeditors.netdna-cdn.com/wp-content/uploads/2016/06/french-bulldog.jpg",
+        "rating": 5
+    },
+    {
+        "id": "5",
+        "name": "Bigotes",
+        "age": 8,
+        "size": "Mediano",
+        "birthDate": "",
+        "weight": 11,
+        "breed": "Schnauzer",
+        "imageUrl": "https://www.petdarling.com/articulos/wp-content/uploads/2014/08/schnauzer-perro.jpg",
+        "rating": 5
+    }
+
+]
