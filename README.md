@@ -288,4 +288,110 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 4. En el template de ProductDetail (HTML), creamos un botón para ir para atrás:
 
+## Protegiendo las rutas con guardas
+
+Hay situaciones en las que queremos limitar el acceso a nuestras rutas; hacerlas que sean accesibles solo a ciertos usuarios (un Admin) o bajo ciertas condiciones. Para ello usamos **guardas**, el *Angular Router* provee varias guardas para llevar a cabo estas operaciones. Algunas de estas **route guards** son:
+
+- ```CanActivate```: Guarda para navegar A una ruta
+- ```CanDeactivate```: Guarda para navegar DESDE una ruta
+- ```Resolve```: Para obtener datos antes de navegar a una cierta ruta (antes de activarla)
+- ```CanLoad```: Para validar el routing asíncrono
+
+Lo que haremos es construir una guarda que nos deje entrar el ```PetDetailComponent``` a menos que una cierta condición se cumpla. Las guardas se implementan como servicios, por lo que deben ser ```@Injectable()```. A diferencia de los otros servicios que hemos usados, los servicios de guardas deben ser provistos (puestos en el providers array del AppModule).
+
+Tutorial
+
+1) Haremos algo muy simple, una guarda que prevenga la navegación al componente de detalle si la id que pasamos no es un número o es menor que cero.
+
+Creamos entonces ```pet-detail-guard.service.ts``` dentro de ```app/pets```.
+
+Le ponemos el siguiente cdigo:
+
+```typescript
+import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+
+
+@Injectable()
+export class PetDetailGuard implements CanActivate {
+
+    constructor(private _router: Router) {}
+
+    canActivate(route: ActivatedRouteSnapshot): boolean {
+        let id = +route.url[1].path;
+        if (isNaN(id) || id < 1) {
+            alert('La id de la mascota no es valida');
+            // redirigimos (a traves de una navegacion), a /pets
+            this._router.navigate(['/pets']);
+            // abortamos la navegacion actual
+            return false;
+        };
+        return true;
+    }
+}
+```
+
+2) Vamos al AppModule y registramos el servicio en el providers array (luego de importarlo)
+
+import { PetDetailGuard } from './pets/pet-detail-service.guard'
+
+providers: [PetDetailGuard]
+
+Y el path queda algo como:
+
+  { path: 'pets/:id',
+        component: PetDetailComponent,
+        canActivate:  [PetDetailGuard]
+  }, 
+
+Quedando, todo ```app.module.ts```, así:
+
+```typescript
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { PetFilterPipe } from './pets/pet-filter.pipe'
+
+import { AppComponent }  from './app.component';
+import { PetListComponent }  from './pets/pet-list.component';
+import { StarComponent }  from './shared/star.component';
+import { WelcomeComponent } from './home/welcome.component';
+import { PetDetailComponent } from './pets/pet-detail.component';
+import { PetDetailGuard } from './pets/pet-detail-service.guard'
+
+import { RouterModule } from '@angular/router';
+
+import { HttpModule } from '@angular/http';
+
+@NgModule({
+  imports:      
+  [ 
+    BrowserModule, 
+    FormsModule, 
+    HttpModule,
+    RouterModule.forRoot([
+      { path: 'pets', component: PetListComponent},
+      { path: 'pets/:id',
+        component: PetDetailComponent,
+        canActivate:  [PetDetailGuard]
+      }, 
+      { path: 'welcome', component:  WelcomeComponent},
+      { path: '', redirectTo: 'welcome', pathMatch: 'full' }, // configuramos la URL por defecto
+      { path: '**', redirectTo: 'welcome', pathMatch: 'full'} //cualquier otra ruta que no matchee, va a ir al WelcomeComponent, aca podría ir una pagina de error tipo 404 Not Found
+      ])
+   ],
+  declarations: [ AppComponent, WelcomeComponent, PetListComponent,StarComponent, PetFilterPipe,PetDetailComponent],
+  bootstrap:    [ AppComponent ],
+  providers: [PetDetailGuard]
+})
+export class AppModule { }
+```
+
+
+
+
+
+
+
+
 
