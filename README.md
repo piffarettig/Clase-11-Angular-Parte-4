@@ -290,7 +290,6 @@ Por ahora solo podemos navegar a ciertas rutas y mostrar vistas, pero ese es un 
 
 Pasar parámetros para las rutas. Veamos el ejemplo si quisiéramos ver el detalle de las mascotas:
 
-
 #### 0. Creamos un PetDetailComponent:
 
 ```pet-detail.component.html```:
@@ -371,7 +370,6 @@ ngOnInit() : void {
 
 ### Routing a través de código
 
-
 Haremos Routing en código en lugar de hacerlo con la directiva **RouterLink** que hemos venido usando en el template.
 
 Por ejemplo: un botón de Save que tiene que ejecutar cierto código una vez que se llenen campos, y recién ahí rutear (si todo salió satisfactoriamente). Para routear con código, usaremos el Router Service.
@@ -423,9 +421,7 @@ Hay situaciones en las que queremos limitar el acceso a nuestras rutas; hacerlas
 
 Lo que haremos es construir una guarda que nos deje entrar el ```PetDetailComponent``` a menos que una cierta condición se cumpla. Las guardas se implementan como servicios, por lo que deben ser ```@Injectable()```. A diferencia de los otros servicios que hemos usados, los servicios de guardas deben ser provistos (puestos en el providers array del AppModule).
 
-Tutorial
-
-1) Haremos algo muy simple, una guarda que prevenga la navegación al componente de detalle si la id que pasamos no es un número o es menor que cero.
+#### 1) Haremos algo muy simple, una guarda que prevenga la navegación al componente de detalle si la id que pasamos no es un número o es menor que cero.
 
 Creamos entonces ```pet-detail-guard.service.ts``` dentro de ```app/pets```.
 
@@ -455,7 +451,7 @@ export class PetDetailGuard implements CanActivate {
 }
 ```
 
-2) Vamos al AppModule y registramos el servicio en el providers array (luego de importarlo)
+#### 2) Vamos al AppModule y registramos el servicio en el providers array (luego de importarlo)
 
 import { PetDetailGuard } from './pets/pet-detail-service.guard'
 
