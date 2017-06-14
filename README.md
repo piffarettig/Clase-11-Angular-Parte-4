@@ -18,8 +18,6 @@
 
 	2.3. Protegiendo las rutas con guardas
 
-3. Mostrando imagenes en Base64
-
 ## Interactuando con una API REST a través de HTTP. Observables 
 
 Los datos a usar en nuestra aplicación van a estar almacenados en algún lado; en la nube, en un servidor en nuestra misma red, en nuestra pc de escritorio, etc. ¿Cómo hacemos para lograr traer esos datos y meterlos dentro de nuestras Views?
