@@ -275,6 +275,10 @@ Vayamos al ```PetListComponent``` y en el ```OnInit```:
         )
     }
 ```    
+
+IMAGEN MASCOTAS OBTENIDAS
+
+IMAGEN DE LOG EN CONSOLA
     
 ## Conceptos avanzados de Routing
 
@@ -287,9 +291,10 @@ Por ahora solo podemos navegar a ciertas rutas y mostrar vistas, pero ese es un 
 Pasar parámetros para las rutas. Veamos el ejemplo si quisiéramos ver el detalle de las mascotas:
 
 
-0. Creamos un PetDetailComponent:
+#### 0. Creamos un PetDetailComponent:
 
-- HTML:
+```pet-detail.component.html```:
+
 ```html
 <div class="panel panel-primary">
     <div class="panel-heading">
@@ -298,8 +303,7 @@ Pasar parámetros para las rutas. Veamos el ejemplo si quisiéramos ver el detal
 </div>
 ```
 
-
-TS:
+```pet-detail.component.ts```:
 
 ```typescript
 import { Component } from '@angular/core';
@@ -315,20 +319,37 @@ export class PetDetailComponent {
 }
 ```
 
-CSS
+Y a su vez agregamos este componente en el AppModule, primero haciendo el import y luego agregando ```PetDetailComponent``` en el array de declarations:
 
-(por ahora vacío)
+```typescript
+import { PetDetailComponent } from './pets/pet-detail.component';
+```
 
-Y LO AGREGAMOS AL AppModule
+```typescript
+declarations: [ AppComponent, WelcomeComponent, PetListComponent,StarComponent, PetFilterPipe, PetDetailComponent],
+```  
 
-1. Seteamos el path en app.module.ts (AppModule). En este caso el path sería: pets/id, indicando que ruta a un componente PetDetailComponent. A su vez, le pasamos el parámetro id, con un slash y un dos puntos adelante (/:id). Si quisiéramos más parámetros, repetimos esto.
-2. En el HTML de nuestro listado de mascotas, ponemos un link (ancla) sobre el nombre, de manera de que cada vez que se haga click sobre el mismo, dicha ruta se resuelva y se le pase el parámetro asociado.
+#### 1. Seteamos el path en app.module.ts (AppModule)
+
+En este caso el path sería: *pets/id*, indicando que ruta a un componente **PetDetailComponent**. A su vez, le pasamos el parámetro id, con una barra y un dos puntos adelante (/:id). Si quisiéramos más parámetros, repetimos esto.
+
+```typescript
+   { path: 'pets/:id', component: PetDetailComponent },
+```
+
+#### 2. Ruteamos al path 
+
+En el HTML de nuestro ***PetListComponent***,  ponemos un link (ancla) sobre el nombre, de manera de que cada vez que se haga click sobre el mismo, dicha ruta se resuelva y se le pase el parámetro asociado.
 
 ```html
   <td><a [routerLink]="['/pets', aPet.id]"> {{aPet.name | uppercase}} </a></td>
 ```
 
-1. En el PetDetailComponent, leemos los parámetros de la ruta, usando el service ActivatedRoute de ‘@angular/router’.
+IMAGEN PET DETAIL VACIO CON RUTA
+
+#### 3. Leemos los parámetros de la ruta n el PetDetailComponent
+
+Leemos los parámetros de la ruta, usando el service ActivatedRoute de ‘@angular/router’.
 
 Lo inyectamos en nuestro componente para que use este servicio (el provider ya viene resuelto por el RouterModule que usamos la clase anterior):
 
@@ -337,7 +358,6 @@ constructor(private _currentRoute: ActivatedRoute) {  }
 ```
 
 3. Agarramos el parámetro de la ruta y lo ponemos en una variable privada, dicha lógica lo haremos en el OnInit (hay que implementar OnInit).
-
 
 ```typescript
 ngOnInit() : void {
@@ -351,41 +371,38 @@ ngOnInit() : void {
 
 ### Routing a través de código
 
-Hacer Routing a través de código:
 
-Haremos Routing en código en lugar de hacerlo con la directiva RouterLink que hemos venido usando en el template.
+Haremos Routing en código en lugar de hacerlo con la directiva **RouterLink** que hemos venido usando en el template.
 
-Por ejemplo: un botón de Save que tiene que ejecutar cierto código una vez que se llenen campos, y recién ahí rutear (si todo salió satisfactoriamente).
+Por ejemplo: un botón de Save que tiene que ejecutar cierto código una vez que se llenen campos, y recién ahí rutear (si todo salió satisfactoriamente). Para routear con código, usaremos el Router Service.
 
-Para routear con código, usaremos el Router service.
+Recordemos, cada vez que inyectemos un servicio en una clase, tenemos que preguntarnos “registramos este servicio en el Angular Injector?”. En este caso, el provider ya viene dad por el RouterModule, por lo que no tenemos que hacerlo
 
-Recordemos, cada vez que inyectemos un servicio en una clase, tenemos que preguntarnos “registramos este servicio en el Angular Injector?”. En este caso, Esto ya viene dado por el RouterModule.
+#### 1. Importamos el Router Service (ProductDetailComponent)
 
-Tutorial:
-
-1. Importamos el Router Service (ProductDetailComponent)
+En ProductDetailComponent:
 
 ```typescript
 import { ActivatedRoute, Router } from '@angular/router';
 ```
 
-2. Inyectamos el servicio:\
+#### 2. Inyectamos el servicio en la clase a través del constructor:
 
 ```typescript
     constructor(private _currentRoute: ActivatedRoute,
-                    private _router : Router) {  
+                private _router : Router) {  
     }
 ```
 
-3. Creamos la función:
+#### 3. Creamos una función que rutee a cierto path:
 
 ```typescript
   onBack(): void {
-        this._router.navigate(['/pets']); //En caso de que necesite parametros los paso como otros argumentos
-    }
+       this._router.navigate(['/pets']); //En caso de que necesite parametros los paso como otros argumentos
+  }
 ```
 
-4. En el template de ProductDetail (HTML), creamos un botón para ir para atrás:
+#### 4. En el template de ProductDetail (HTML), creamos un botón para ir para atrás:
 
 ```html
 <div class='panel-footer'>
