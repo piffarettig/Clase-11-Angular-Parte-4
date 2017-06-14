@@ -1,4 +1,4 @@
-# Clase-11-Angular-Parte-4
+# Angular: Http y Observables, Más sobre Routing y Base64
 
 ## Hoja de Ruta
 
@@ -66,7 +66,6 @@ import { HttpModule } from '@angular/http';
 ```
 
 A su vez necesitamos registrar el provider de ese service, en el Angular Injector. Como en muchos casos, esto ya viene hecho, gracias a que particularmente el módulo **HttpModule** lleva eso a cabo. Por ende, debemos agregarlo al array de imports de nuestro ```AppModule```.
-
 
 ```
 @NgModule({
