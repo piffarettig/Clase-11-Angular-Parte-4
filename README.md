@@ -1,4 +1,4 @@
-# Angular: Http y Observables, Más sobre Routing y Base64
+# Angular: Http y Observables y Más sobre Routing
 
 ## Hoja de Ruta
 
