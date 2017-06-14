@@ -67,7 +67,7 @@ import { HttpModule } from '@angular/http';
 
 A su vez necesitamos registrar el provider de ese service, en el Angular Injector. Como en muchos casos, esto ya viene hecho, gracias a que particularmente el módulo **HttpModule** lleva eso a cabo. Por ende, debemos agregarlo al array de imports de nuestro ```AppModule```.
 
-```
+```typescript
 @NgModule({
   imports:      
   [ 
@@ -90,7 +90,7 @@ import { Observable } from ‘rxjs/Observable’;
 
 Es importante notar que las llamadas HTTP son operaciones asincrónicas únicas, por lo que la secuencia Observable contiene sólo un elemento  del tipo Response. También precisamos hacer:
 
-```
+```typescript
 import { Http, Response } from ‘@angular/http’;
 ```
 
