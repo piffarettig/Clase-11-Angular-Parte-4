@@ -34,7 +34,7 @@ En este módulo aprenderemos a enviar HTTP requests con **Observables** para obt
 
 4. La aplicación procesa entonces los datos (por ej: los muestra en una View).
 
-![imagen](doc-images/http_messages.png)
+![imagen](doc-img/http_messages.png)
 
 ### Observables y las ‘Reactive Extensions’
 
@@ -65,7 +65,7 @@ Como ya hemos vistos, los servicios de Angular son una excelente forma de encaps
 
 Así tenemos ahora las mascotas:
 
-![imagen](doc-images/hardcoded.png)
+![imagen](doc-img/hardcoded.png)
 
 Angular provee un Servicio HTTP que nos permite llevar a cabo esto; donde luego de comunicarnos con el backend, cada vez que este nos responda, la respuesta llegará a nuestro servicio (PetService), en forma de Observable.
 
@@ -270,7 +270,7 @@ export class PetService {
 
 Es interesante ver como también el servicio ```Http``` nos permite realizar llamadas usando cualquier verbo Http:
 
-![imagen](doc-images/httpoperations.png)
+![imagen](doc-img/httpoperations.png)
 
 Finalmente, lo que hacemos es que nuestro componente ```PetListComponent``` se suscriba al resultado de la llamada (a los observables). Esto lo hacemos a través del método **```suscribe```**. Y cómo los Observables manejan múltiples valores a lo largo del tiempo, la función es llamada para cada valor que el Observable emite. En algunos casos queremos saber cuando el observable se completa, por lo que también podemos tener una función de completado (tercer argumento que es opcional, se ejecuta cuando se completa).
 
@@ -291,7 +291,7 @@ Vayamos al ```PetListComponent``` y en el ```OnInit```:
     }
 ```    
 
-![imagen](doc-images/http_messages.png)
+![imagen](doc-img/http_messages.png)
     
 ## Conceptos avanzados de Routing
 
@@ -357,7 +357,7 @@ En el HTML de nuestro ***PetListComponent***,  ponemos un link (ancla) sobre el 
   <td><a [routerLink]="['/pets', aPet.id]"> {{aPet.name | uppercase}} </a></td>
 ```
 
-![imagen](doc-images/pet-detail-no-id.png)
+![imagen](doc-img/pet-detail-no-id.png)
 
 #### 3. Leemos los parámetros de la ruta n el PetDetailComponent
 
@@ -381,7 +381,7 @@ ngOnInit() : void {
 }
 ```
 
-![imagen](doc-images/pet-detail-with-id.png)
+![imagen](doc-img/pet-detail-with-id.png)
 
 ### Routing a través de código
 
@@ -524,6 +524,6 @@ export class AppModule { }
 
 Ver la URL y ver como se valida:
 
-![imagen](doc-images/guard1.png)
+![imagen](doc-img/guard1.png)
 
-![imagen](doc-images/guard2.png)
+![imagen](doc-img/guard2.png)
