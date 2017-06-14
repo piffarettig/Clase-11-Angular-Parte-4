@@ -522,8 +522,10 @@ import { HttpModule } from '@angular/http';
 export class AppModule { }
 ```
 
-Ver la URL y ver como se valida:
+Ver la URL y ver como se valida. Si pongo una id con letras:
 
 ![imagen](doc-img/guard1.png)
+
+Si pongo de id un número negativo:
 
 ![imagen](doc-img/guard2.png)
