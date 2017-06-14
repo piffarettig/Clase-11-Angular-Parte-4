@@ -1,5 +1,11 @@
 # Angular: Http y Observables y Más sobre Routing
 
+## Para correr el proyecto:
+
+1) Pararse en la carpeta del proyecto: ```cd my-first-angular-project/```
+2) ```npm install```
+3) ```npm start```
+
 ## Hoja de Ruta
 
 1. Interactuando con una API REST a través de HTTP. Observables
@@ -28,6 +34,8 @@ En este módulo aprenderemos a enviar HTTP requests con **Observables** para obt
 
 4. La aplicación procesa entonces los datos (por ej: los muestra en una View).
 
+![imagen](doc-images/http_messages.png)
+
 ### Observables y las ‘Reactive Extensions’
 
 Los Observables nos permiten manejar datos asincrónicos, como los datos que vendrán de nuestro *backend* o de algún *web service*.
@@ -54,6 +62,10 @@ Tanto Observables como Promises sirven para lo mismo, pero los Observables permi
 ### Tutorial: Consumiendo nuestra API
 
 Como ya hemos vistos, los servicios de Angular son una excelente forma de encapsular lógica como la obtención de datos de un web service / backend, para que cualquier otro componente o service que lo precise lo use, a través de inyección de dependencias. En la clase anterior hicimos eso, pero manteniendo una lista hardcodeada de mascotas. En su lugar, queremos enviar una solicitud HTTP para obtener las mascotas. 
+
+Así tenemos ahora las mascotas:
+
+![imagen](doc-images/hardcoded.png)
 
 Angular provee un Servicio HTTP que nos permite llevar a cabo esto; donde luego de comunicarnos con el backend, cada vez que este nos responda, la respuesta llegará a nuestro servicio (PetService), en forma de Observable.
 
@@ -201,7 +213,6 @@ export class PetService {
 
 }
 ```
-
 Sin embargo, como ya mencionamos antes, debemos usar la función ```map```. Nuestros componentes, como el ```PetListComponent```, esperan recibir una lista de mascotas (Pets), no de respuestas Http ```(Response)```. En consecuencia precisamos “traducir” cada response en un array de mascotas. Eso lo hacemos con el operador ```map```. Dicho operador lo que nos va a permitir es tomar la Response Http y convertirla en un array de Mascotas. El argumento que recibe dicha función es una Arrow Function, como ya hemos visto, que son simplemente lambda expressions, que transforma la respuesta en un JSON. 
 
 Quedando algo así:
@@ -257,6 +268,10 @@ export class PetService {
 }
 ```
 
+Es interesante ver como también el servicio ```Http``` nos permite realizar llamadas usando cualquier verbo Http:
+
+![imagen](doc-images/httpoperations.png)
+
 Finalmente, lo que hacemos es que nuestro componente ```PetListComponent``` se suscriba al resultado de la llamada (a los observables). Esto lo hacemos a través del método **```suscribe```**. Y cómo los Observables manejan múltiples valores a lo largo del tiempo, la función es llamada para cada valor que el Observable emite. En algunos casos queremos saber cuando el observable se completa, por lo que también podemos tener una función de completado (tercer argumento que es opcional, se ejecuta cuando se completa).
 
 A su vez cuando queramos podemos cancelar la suscripción cuando queramos, con el objeto que nos devolvió al suscribirnos.
@@ -276,9 +291,7 @@ Vayamos al ```PetListComponent``` y en el ```OnInit```:
     }
 ```    
 
-IMAGEN MASCOTAS OBTENIDAS
-
-IMAGEN DE LOG EN CONSOLA
+![imagen](doc-images/http_messages.png)
     
 ## Conceptos avanzados de Routing
 
@@ -344,7 +357,7 @@ En el HTML de nuestro ***PetListComponent***,  ponemos un link (ancla) sobre el 
   <td><a [routerLink]="['/pets', aPet.id]"> {{aPet.name | uppercase}} </a></td>
 ```
 
-IMAGEN PET DETAIL VACIO CON RUTA
+![imagen](doc-images/pet-detail-no-id.png)
 
 #### 3. Leemos los parámetros de la ruta n el PetDetailComponent
 
@@ -367,6 +380,8 @@ ngOnInit() : void {
 	this.pageTitle +=  `: ${id}`;
 }
 ```
+
+![imagen](doc-images/pet-detail-with-id.png)
 
 ### Routing a través de código
 
@@ -506,3 +521,9 @@ import { HttpModule } from '@angular/http';
 })
 export class AppModule { }
 ```
+
+Ver la URL y ver como se valida:
+
+![imagen](doc-images/guard1.png)
+
+![imagen](doc-images/guard2.png)
