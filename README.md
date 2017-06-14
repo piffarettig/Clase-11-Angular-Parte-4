@@ -2,70 +2,71 @@
 
 ## Hoja de Ruta
 
-- Hoja de ruta - 
+1. Interactuando con una API REST a través de HTTP. Observables
 
-## Interactuando con una API REST a través de HTTP: Observables 
+2. Routing Avanzado:
+
+	2.1. Pasando parámetros a nuestras rutas
+
+	2.2. Ruteando a través de código
+
+	2.3. Protegiendo las rutas con guardas
+
+3. Mostrando imagenes en Base64
+
+## Interactuando con una API REST a través de HTTP. Observables 
 
 Los datos a usar en nuestra aplicación van a estar almacenados en algún lado; en la nube, en un servidor en nuestra misma red, en nuestra pc de escritorio, etc. ¿Cómo hacemos para lograr traer esos datos y meterlos dentro de nuestras Views?
 
-En este módulo aprenderemos a enviar HTTP requests con Observables para obtener datos.
-
-La mayoría de las aplicaciones hechas en Angular obtienen datos usando HTTP.
+En este módulo aprenderemos a enviar HTTP requests con **Observables** para obtener datos. La mayoría de las aplicaciones hechas en Angular obtienen datos usando HTTP. ¿Cuál es el flujo que se da?
 
 1. La aplicación envía una request a un servidor/web service (HTTP GET http://lupi.com/api/pets/2)
+
 2. Ese Web Service obtiene los datos, seguramente accediendo a una base de datos.
+
 3. El Web Service le contesta a la aplicación, con los datos obtenidos, en forma de una HTTP Response.
+
 4. La aplicación procesa entonces los datos (por ej: los muestra en una View).
 
-Observables y las ‘Reactive Extensions’
+### Observables y las ‘Reactive Extensions’
 
-Los Observables nos permiten manejar datos asincrónicos, como los datos que vendrán de nuestro backend o web service.
+Los Observables nos permiten manejar datos asincrónicos, como los datos que vendrán de nuestro *backend* o de algún *web service*.
 
-Los Observables tratan a los eventos como una colección; podemos pensar a un Observable como un array de elementos que van llegando asincrónicamente a medida que pasa el tiempo. Hoy en día no tenemos Observables, estos son una feature propuesta para ES2016 (versión superior de JavaScript), por lo que para poder usarlos debemos utilizar una librería de terceros: RxJS o Reactive Extensions. No confundir esto con ReactJS.
+Los mismos tratan a los eventos como una colección; podemos pensar a un Observable como un array de elementos que van llegando asincrónicamente a medida que pasa el tiempo. Hoy en día no tenemos Observables, estos son una feature propuesta para ES2016 (versión superior de JavaScript), por lo que para poder usarlos debemos utilizar una librería de terceros: **RxJS** o **Reactive Extensions**. No confundir esto con ReactJS.
 
-Los observables se usan incluso dentro de Angular, en su sistema de eventos o en su servicio HTTP (que es por eso que lo estamos viendo).
+Los **Observables** se usan incluso dentro de Angular, en su sistema de eventos o en su servicio HTTP (motivo por el cual lo estamos viendo).
 
-Los Observables tienen métodos. La gracia de estos métodos es que, una vez se aplican sobre un observable, estos realizan alguna transformación sobre el  Observable original, y lo retornan. Estos métodos siempre devuelven un Observable, permitiendo concatenar llamadas sobre un Observable de forma simple. Ejemplo: map, filter, take, merge, etc.
+A su vez, los **Observables** tienen métodos. La gracia de estos métodos es que, una vez se aplican sobre un **Observable**, estos realizan alguna transformación sobre el  **Observable** original, y lo retornan. Estos métodos siempre devuelven un **Observable**, permitiendo concatenar llamadas sobre un **Observable** de forma simple. Ejemplo: *map*, *filter*, *take*, *merge*, etc.
 
-Una vez tengamos nuestros Observables, un método en nuestro código puede suscribirse a un Observable, para recibir notificaciones asincrónicas a medida que nuevos datos vayan llegando. Dicho método puede entonces “reaccionar” (react), sobre esos datos. Dicho método a su vez es notificado cuando no hay más datos, o cuando un error ocurre.
+Una vez tengamos nuestros Observables, un método en nuestro código puede **suscribirse a un Observable**, para **recibir notificaciones asincrónicas a medida que nuevos datos vayan llegand**o. Dicho método puede entonces “reaccionar”, sobre esos datos. Dicho método a su vez es notificado cuando no hay más datos, o cuando un error ocurre.
 
-Hacer comparación promises vs observables.
+### Observables vs Promises
 
-—
+Otra forma bastante común de obtener datos a través de HTTP es usando **promises**. Las promises/promesas son objetos de JavaScript que sirven para hacer computación asincrónica, representando un cierto valor que puede estar ahora, en el futuro o nunca. Estas permiten setear manejadores (funciones o callbacks), que ejecuten comportamiento una vez que el valor esté disponible. Las llamadas por HTTP, pueden ser manejadas a través de promesas. Esto permite que métodos asíncronicos devuelvan valores como si fueran sincrónicos: en vez de inmediatamente retornar el valor final, el método asincrónico devuelve una promesa de suministrar el valor en algún momento en el futuro.
 
-There is a huge advantage of observables that is quite relevant here.	Observable supports cancellation while Promise doesn't.
-Using subscribe() and map(), instead of then() doesn't seem to add much complication to me. You can also use toPromise() to get a Promise if that is what you need.
-See also Angular - Promise vs Observable for more details.
-Also if FRP style of programming is used it's handy to get an observable everywhere. If that is not desired just using toPromise() gives a Promise and the slightly simpler API.
+Tanto Observables como Promises sirven para lo mismo, pero los Observables permiten hacer más cosas:
 
-Promise
-A Promise handles a single event when an async operation completes or fails.
-Note: There are Promise libraries out there that support cancellation, but ES6 Promise doesn't so far.
-Observable
-An Observable is like a Stream (in many languages) and allows to pass zero or more events where the callback is called for each event.
-Often Observable is preferred over Promise because it provides the features of Promise and more. With Observable it doesn't matter if you want to handle 0, 1, or multiple events. You can utilize the same API in each case.	Observable also has the advantage over Promise to be cancelable. If the result of an HTTP request to a server or some other expensive async operation isn't needed anymore, the Subscription of an Observable allows to cancel the subscription, while a Promise will eventually call the success or failed callback even when you don't need the notification or the result it provides anymore.
-Observable provides operators like map, forEach, reduce, ... similar to an array
-There are also powerful operators like retry(), or replay(), ... that are often quite handy.
+- Los Observables permiten **cancelar la suscripción**, mientras que las Promises no. Si el resultado de una request HTTP a un servidor o alguna otra operación costosa que es asincrónica no es más necesaria, el objeto **Suscription** sobre un Observable puede ser cancelado. 
+- Las Promises manejan un único evento, cuando una operación asincrónica completa o falla. Los Observables son como los Stream (en muchos lenguajes), y permiten pasar cero o más eventos donde el callback será llamado para cada evento.
+- En general, se suelen usar Observables porque permiten hacer lo mismo que las Promises y más.
+- Los Observables proveen operadores como *map*, *forEach*, *reduce*, similares a un array.
 
-— 
-
-Notar que podremos usar Promises en lugar de Observables en caso de que lo queramos para hacer requests HTTP.
-
-Tutorial:
+### Tutorial: Consumiendo nuestra API
 
 Como ya hemos vistos, los servicios de Angular son una excelente forma de encapsular lógica como la obtención de datos de un web service / backend, para que cualquier otro componente o service que lo precise lo use, a través de inyección de dependencias. En la clase anterior hicimos eso, pero manteniendo una lista hardcodeada de mascotas. En su lugar, queremos enviar una solicitud HTTP para obtener las mascotas. 
 
 Angular provee un Servicio HTTP que nos permite llevar a cabo esto; donde luego de comunicarnos con el backend, cada vez que este nos responda, la respuesta llegará a nuestro servicio (PetService), en forma de Observable.
 
-1. 
+#### 1. Registramos el HttpModule en el AppModule
 
-A su vez necesitamos registrar el provider de ese service, en el Angular Injector. Como en muchos casos, esto ya viene hecho. Particularmente, el módulo HttpModule lleva eso a cabo. Por ende, debemos agregarlo al array de imports de nuestro AppModule.
+- En ```app.module.ts```, importamos el módulo que precisamos para hacer solicitudes Http.
 
 ```typescript
 import { HttpModule } from '@angular/http';
 ```
 
-Y más abajo
+A su vez necesitamos registrar el provider de ese service, en el Angular Injector. Como en muchos casos, esto ya viene hecho, gracias a que particularmente el módulo **HttpModule** lleva eso a cabo. Por ende, debemos agregarlo al array de imports de nuestro ```AppModule```.
+
 
 ```
 @NgModule({
@@ -78,42 +79,107 @@ Y más abajo
 
 Recordemos que el array declarations es para declarar componentes, directivas y pipes que pertenecen a nuestro módulo. Mientras que el array imports es para obtener módulos de afuera.
 
-2. Vamos al PetService:
+#### 2. Armemos el cuerpo de nuestra llamada
 
-Hagamos getProducts devuelve una respuesta de tipo Observable<Response>
+Hagamos que ```getProducts``` devuelva una respuesta de tipo ```Observable<Response>```. Siendo Response una clase que contiene información de la respuesta HTTP.
 
-Importamos también: 
+Para ello, en ```pet.service.ts```, importamos la librería que nos permite trabajar con Observables (Reactive Extensions).
 
 ```typescript
-import { Observable } from ‘rxjs/Observable’;
+import { Observable } from ‘rxjs/Observable’; 
 ```
 
-Es importante notar que las llamadas HTTP son operaciones asincrónicas únicas, por lo que la secuencia Observable contiene sólo un elemento  del tipo Response. 
-
-Es importante notar que también precisamos hacer:
+Es importante notar que las llamadas HTTP son operaciones asincrónicas únicas, por lo que la secuencia Observable contiene sólo un elemento  del tipo Response. También precisamos hacer:
 
 ```
 import { Http, Response } from ‘@angular/http’;
 ```
 
-Y ahora veamos esto, realmente queremos un Observable que contenga Response?
+Y ahora veamos esto, ¿realmente queremos "observar" Response enteras HTTP? A nosotros simplemente nos interesa obtener mascotas, no Responses. No queremos "observar" objetos del tipo Response.
 
 Para cargar el operador map, tenemos que cargarlo usando import:
 
+```typescript
 import ‘rxjs/add/operator/map’;
+```
 
 Esta es una forma bastante inusual de cargar cosas: le dice al Module Loader que cargue una librería, sin particularmente importar nada. Cuando la librería se carga, su código JS se carga, cargándose para esta librería en particular, la función map para que quede disponible.
 
-No olvidamos darle:
+Para que esto funcione, en la consola deberíamos haber hecho:
 
-```
+```bash
 npm install rxjs --save 
 npm start
 ```
 
-Para mantener las cosas simples, hagamos que mismo nuestro Web Server retorne un JSON de las mascotas:
+Y ahora, para mantener las cosas simples, hagamos que mismo nuestro Web Server retorne un JSON de las mascotas. Para ello creamos una nueva carpeta: ```src/api/pets```. Dentro de dicha carpeta, creamos un archivo ```test-api.json```, y le pegamos el siguiente JSON:
 
-CODIGO DE API TRUCHA
+```json
+[
+    {
+        "id": "1",
+        "name": "Bobby",
+        "age": 4,
+        "size": "Grande",
+        "birthDate": "",
+        "weight": 20,
+        "breed": "Golden Retriever",
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Golden_Retriever_with_tennis_ball.jpg/1200px-Golden_Retriever_with_tennis_ball.jpg",
+        "rating": 3
+    },
+    {
+        "id": "2",
+        "name": "Zeus",
+        "age": 1,
+        "size": "Grande",
+        "birthDate": "",
+        "weight": 18,
+        "breed": "Husky",
+        "imageUrl": "http://cdn3-www.dogtime.com/assets/uploads/gallery/siberian-husky-dog-breed-pictures/siberian-husky-dog-breed-pictures-5.jpg",
+        "rating": 4
+    },
+        {
+        "id": "3",
+        "name": "Roberto",
+        "age": 3,
+        "size": "Mediano",
+        "birthDate": "",
+        "weight": 15,
+        "breed": "Pug",
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/63/Mops-falk-vom-maegdebrunnen-internationaler-champion-fci.jpg",
+        "rating": 5
+    },
+    {
+        "id": "4",
+        "name": "Batman",
+        "age": 1,
+        "size": "Mediano",
+        "birthDate": "",
+        "weight": 10,
+        "breed": "French Bulldog",
+        "imageUrl": "http://petful.supercopyeditors.netdna-cdn.com/wp-content/uploads/2016/06/french-bulldog.jpg",
+        "rating": 5
+    },
+    {
+        "id": "5",
+        "name": "Bigotes",
+        "age": 8,
+        "size": "Mediano",
+        "birthDate": "",
+        "weight": 11,
+        "breed": "Schnauzer",
+        "imageUrl": "https://www.petdarling.com/articulos/wp-content/uploads/2014/08/schnauzer-perro.jpg",
+        "rating": 5
+    }
+]
+```
+
+Finalmente:
+
+- Definimos una constante que tenga la URL de nuestra WebApi (esto en su obligatorio va a cambiar).
+- Inyectamos el servicio ```Http``` en nuestro ```PetService```.
+- Cambiamos el tipo de ```getPets```, para que devuelva ```Observable<Response>```.
+- Cambiamos el código de ```getPets``` para que llame al ```get``` del ```_httpService```.
 
 La clase queda algo así:
 
@@ -137,7 +203,9 @@ export class PetService {
 }
 ```
 
-Nuestros componentes, como el PetListComponent, esperan recibir una lista de Mascotas (Pets), no de respuestas Http. En consecuencia precisamos “traducir” cada response en un array de mascotas. Eso lo hacemos con el operador map. Dicho operador lo que nos va a permitir es tomar la Response Http y convertirla en un array de Mascotas. El argumento que recibe dicha función es una array function, como ya hemos visto, que son simplemente lambda expressions, que transforma la respuesta en un JSON. Quedando algo así:
+Sin embargo, como ya mencionamos antes, debemos usar la función ```map```. Nuestros componentes, como el ```PetListComponent```, esperan recibir una lista de mascotas (Pets), no de respuestas Http ```(Response)```. En consecuencia precisamos “traducir” cada response en un array de mascotas. Eso lo hacemos con el operador ```map```. Dicho operador lo que nos va a permitir es tomar la Response Http y convertirla en un array de Mascotas. El argumento que recibe dicha función es una Arrow Function, como ya hemos visto, que son simplemente lambda expressions, que transforma la respuesta en un JSON. 
+
+Quedando algo así:
 
 ```typescript
   getPets(): Observable<Array<Pet>> {
@@ -190,14 +258,25 @@ export class PetService {
 }
 ```
 
-Finalmente, lo que hacemos es que nuestro componente se suscriba al resultado de la llamada (a los observables). Esto lo hacemos a través del método suscribe. Y cómo los Observables manejan múltiples valores a lo largo del tiempo, la función es llamada para cada valor que el Observable emite. En algunos casos queremos saber cuando el observable se completa, por lo que también podemos tener una función de completado (tercer argumento que es opcional, se ejecuta cuando se completa).
+Finalmente, lo que hacemos es que nuestro componente ```PetListComponent``` se suscriba al resultado de la llamada (a los observables). Esto lo hacemos a través del método **```suscribe```**. Y cómo los Observables manejan múltiples valores a lo largo del tiempo, la función es llamada para cada valor que el Observable emite. En algunos casos queremos saber cuando el observable se completa, por lo que también podemos tener una función de completado (tercer argumento que es opcional, se ejecuta cuando se completa).
 
 A su vez cuando queramos podemos cancelar la suscripción cuando queramos, con el objeto que nos devolvió al suscribirnos.
 
 La idea es que nuestro componente sea notificado cada vez que un Observable emite un elemento, haciendo alguna acción particular para cada caso (OK, y Error). 
 
-Vayamos al PetListComponent:
+Vayamos al ```PetListComponent``` y en el ```OnInit```:
 
+```typescript
+
+  ngOnInit(): void {
+        console.log("aca obtengo datos del backend!");
+        this._petsService.getPets().subscribe(
+            ((obtainedPets : Array<Pet>) => this.pets = obtainedPets),
+            ((error : any) => console.log(error))
+        )
+    }
+```    
+    
 ## Conceptos avanzados de Routing
 
 La otra clase habíamos visto los aspectos básicos de Routing. Ahora veremos algunas técnicas adicionales para manipular las rutas.
@@ -242,7 +321,6 @@ CSS
 (por ahora vacío)
 
 Y LO AGREGAMOS AL AppModule
-
 
 1. Seteamos el path en app.module.ts (AppModule). En este caso el path sería: pets/id, indicando que ruta a un componente PetDetailComponent. A su vez, le pasamos el parámetro id, con un slash y un dos puntos adelante (/:id). Si quisiéramos más parámetros, repetimos esto.
 2. En el HTML de nuestro listado de mascotas, ponemos un link (ancla) sobre el nombre, de manera de que cada vez que se haga click sobre el mismo, dicha ruta se resuelva y se le pase el parámetro asociado.
